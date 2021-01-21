@@ -92,6 +92,21 @@ context length 920
 question length 4639
 ```
 
+Open-domain QA 형태로 바꾸기위해, 원래 데이터를 다음과 같이 context와 question&answer로 나누었습니다.
+```python
+# dev_context.json
+예시 넣어야함 
+```
+```python
+# dev_qa.json
+예시 넣어야함 
+```
+Open-domain QA 는 현재 데이터에서 다음과 같이 진행됩니다.
+
+1. XXX_qa.json 에서 question 이 query 가 되고, answer은 정답이 됨
+2. 이를 기준으로 XXX_context.json 내에서 가장 관련있는 context를 찾고, 이를 (c,q,a) 형태로 묶어서 다시 XXXXXX.json 으로 만들어줌 
+3. XXXXX.json 파일 가지고 일반적인 MRC 처럼 수행 후 answer과 비교하여 EM, F1_score 계산
+
 ## TODO
 
 자료 작성 관련 
@@ -100,9 +115,8 @@ question length 4639
 - HF에서 그냥 불러온 것들 중 이해해야하는 것들은 직접 구현해야함
 
 
-코드 관련 
-- black
-- 리팩토링 
+코드 관련
+- reformat, refactor, clean 
 - 오래걸리는 부분 multiprocessing 적용 
    - dense/sparse retrieve 부분
    
