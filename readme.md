@@ -71,6 +71,8 @@ faiss 설치를 이와 같이 해야합니다
     - RAG 느낌
 5. (TO-DO) phrase retrieval(fine tuned DPR+faiss 으로 예상)을 이용해 시스템 구현
     - DenSPI 같은 느낌
+6. (TO-DO) generative 모델로 closed-book QA 하기 
+    - BART, T5, REALM
 
  
 
@@ -124,10 +126,14 @@ Open-domain QA 는 현재 데이터에서 다음과 같은 순서 진행됩니�
 2. 이를 기준으로 XXX_context.json 내에서 가장 관련있는 context를 찾고, 이를 (c,q,a) 형태로 묶어서 다시 XXXXXX.json 으로 만들어줌 
 3. XXXXX.json 파일 가지고 일반적인 MRC 처럼 수행 후 answer과 비교하여 EM, F1_score 계산
 
+- closed-bookQA 를 위해선 context 를 찾는 과정을 제외하면 됩니다
+
+
 ## TODO
 
 자료 작성 관련 
 - RAG DenSPI 추가 
+- T5 REALM 추가
 - fine-tune 가능하도록 만들기
 - HF에서 그냥 불러온 것들 중 이해해야하는 것들은 직접 구현해야함
 
