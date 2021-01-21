@@ -22,6 +22,12 @@ Automatic Mixed Precision(AMP)를 사용하기 위해 apex가 필요합니다
 해당 컨테이너는 apex가 설치가 되어있어 문제가 없었으나 혹시 로컬에서 직접 실행하실때 이슈가 있다면 말해주세요 
 
 
+### faiss 관련
+
+faiss 는 conda 기반으로 설치하는 것이 가장 편합니다. 
+직접 빌드하는 경우 생기는 오류들은 깃헙 이슈를 참고하시면 도움이 됩니다.
+cuda 11 은 아직 공식적으로 지원하지 않습니다. 다만 cuda 버전 지정없이 설치시 잘 작동합니다
+
 ### RTX 3090 사용시 faiss 설치 이슈
 
 faiss 설치를 이와 같이 해야합니다
@@ -64,7 +70,7 @@ faiss 설치를 이와 같이 해야합니다
 	./dense/         # dense 관련 파일
 	./sparse/        # sparse 관련 파일
 	./squad/         # squad 샘플 데이터셋 (train, dev) 및 
-                     # squad를 open domain qa 형식으로 바꾼 파일 (_context, _qa)
+                         # squad를 open domain qa 형식으로 바꾼 파일 (_context, _qa)
 ./output/       # 모델 저장 및 기타. config.py 에서 경로 수정가능 
 
 config.py       # 모델 configuration 저장. 현재는 HF config 와 연동안됨
