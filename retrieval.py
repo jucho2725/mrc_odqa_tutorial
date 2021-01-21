@@ -98,7 +98,7 @@ class SparseRetrieval(object):
         for item in tqdm(qas):
             query = item['question']
             query_id = item['id']
-            answers = item['answers']
+            answers = item['answers'][0]
             query_s_embedding = model.transform([query]).toarray()
             predict_dict = self.sparse_searching(query_s_embedding,
                                                  sparse_embedding,
@@ -270,7 +270,7 @@ class DenseRetrieval:
         for item in tqdm(qas):
             query = item['question']
             query_id = item['id']
-            answers = item['answers']
+            answers = item['answers'][0]
 
             input_ids = self.question_encoder_tokenizer(query, return_tensors="pt")["input_ids"]
             question_hidden_states = self.question_encoder(input_ids)[0]
@@ -333,17 +333,17 @@ if __name__ == "__main__":
     mode = 'dev'
     context_file = f'{mode}_context.json'
     qas_file =  f'{mode}_qa.json'
-    ret_sp = SparseRetrieval(mode, data_path=cfg.squad_dir)
-    tfidfv, context_embeddings = ret_sp.make_embedding(context_file)
-    cqa_df = ret_sp.retrieve(tfidfv, context_embeddings, qas_file)
-    res_path = os.path.join(cfg.sparse_dir, f"retrieved_{mode}_sparse.csv")
-    cqa_df.to_csv(res_path, sep='\t', index=False)
+    # ret_sp = SparseRetrieval(mode, data_path=cfg.squad_dir)
+    # tfidfv, context_embeddings = ret_sp.make_embedding(context_file)
+    # cqa_df = ret_sp.retrieve(tfidfv, context_embeddings, qas_file)
+    # res_path = os.path.join(cfg.sparse_dir, f"retrieved_{mode}_sparse.csv")
+    # cqa_df.to_csv(res_path, sep='\t', index=False)
 
     # Test dense
-    # model_name = 'facebook/dpr-question_encoder-single-nq-base'
-    # passages_path = os.path.join(cfg.dense_dir, "dpr_dataset")
-    # index_path = os.path.join(cfg.dense_dir, "dpr_dataset_hnsw_index.faiss")
-    # ret_ds = DenseRetrieval.from_pretrained(model_name, passages_path=passages_path, index_path=index_path, mode=mode)
-    # cqa_df = ret_ds.retrieve(qas_file)
-    # res_path = os.path.join(cfg.dense_dir, f"retrieved_{mode}_dense.csv")
-    # cqa_df.to_csv(res_path, sep='\t', index=False)
+    model_name = 'facebook/dpr-question_encoder-single-nq-base'
+    passages_path = os.path.join(cfg.dense_dir, "dpr_dataset")
+    index_path = os.path.join(cfg.dense_dir, "dpr_dataset_hnsw_index.faiss")
+    ret_ds = DenseRetrieval.from_pretrained(model_name, passages_path=passages_path, index_path=index_path, mode=mode)
+    cqa_df = ret_ds.retrieve(qas_file)
+    res_path = os.path.join(cfg.dense_dir, f"retrieved_{mode}_dense.csv")
+    cqa_df.to_csv(res_path, sep='\t', index=False)
