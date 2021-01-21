@@ -21,6 +21,17 @@ Automatic Mixed Precision(AMP)를 사용하기 위해 apex가 필요합니다
 
 해당 컨테이너는 apex가 설치가 되어있어 문제가 없었으나 혹시 로컬에서 직접 실행하실때 이슈가 있다면 말해주세요 
 
+Colab 사용시 apex 설치
+
+```python
+try:
+  import apex
+except Exception:
+  ! git clone https://github.com/NVIDIA/apex.git
+  % cd apex
+  !pip install --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" .
+  %cd ..
+```
 
 ### faiss 관련
 
@@ -107,7 +118,7 @@ Open-domain QA 형태로 바꾸기위해, 원래 데이터를 다음과 같이 c
 # dev_qa.json
 예시 넣어야함 
 ```
-Open-domain QA 는 현재 데이터에서 다음과 같이 진행됩니다.
+Open-domain QA 는 현재 데이터에서 다음과 같은 순서 진행됩니다.
 
 1. XXX_qa.json 에서 question 이 query 가 되고, answer은 정답이 됨
 2. 이를 기준으로 XXX_context.json 내에서 가장 관련있는 context를 찾고, 이를 (c,q,a) 형태로 묶어서 다시 XXXXXX.json 으로 만들어줌 
