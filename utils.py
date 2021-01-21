@@ -6,6 +6,8 @@ import torch
 import numpy as np
 import config as cfg
 from transformers.data.processors.squad import SquadProcessor, squad_convert_examples_to_features
+from typing import Iterable, List, Optional, Tuple
+import os
 
 def set_seed(args):
     random.seed(args.seed)
@@ -43,27 +45,30 @@ def convert_json(df):
         qas_dict = {}
 
         qas_dict['question'] = df.loc[i, "question"]
-        qas_dict['id'] = df.loc[i, "q_id"]
+        qas_dict['answers'] = df.loc[i, 'answers']  # should comment out for test
+        qas_dict['id'] = df.loc[i, "que_id"]
 
         para_dict['qas'] = [qas_dict]
         datas.append(para_dict)
 
     rebuild['data'] = []
-    rebuild['data'].append({'paragraphs': datas})
+    rebuild['data'].append({'title':"converted",
+                           'paragraphs': datas})
 
     return rebuild
 
 
-def save_json(df, mode):
+def save_json(df, mode_or_filename):
     result_dict = convert_json(df)
 
-    if mode == "train":
-        file_name = "train.json"
-    elif mode == "dev":
-        file_name = "dev.json"
+    if mode_or_filename == "train" or mode_or_filename == "dev" or mode_or_filename == "test":
+        file_path = os.path.join(cfg.squad_dir, f"{mode_or_filename}.json")
     else:
-        file_name = "test.json"
-    file_path = './data/' + file_name
+        if 'sparse' in mode_or_filename:
+            file_path = os.path.join(cfg.sparse_dir, mode_or_filename)
+        elif 'dense' in mode_or_filename:
+            file_path = os.path.join(cfg.dense_dir, mode_or_filename)
+        print(f"filename: {file_path}" )
     with open(file_path, "w") as json_file:
         json.dump(result_dict, json_file)
 
@@ -71,22 +76,39 @@ class SquadV1Processor(SquadProcessor):
     train_file = cfg.train_file
     dev_file = cfg.dev_file
 
-def load_and_cache_examples(args, tokenizer, mode, evaluate=False, output_examples=False):
+def load_and_cache_examples(args, tokenizer, mode_or_filename, output_examples=False):
     """
     Changes 
         1. no distributed training(removed for simplicity)
         2. no caching(cache make preprocessing time shorter, but removed for simplicity)
     """
-    input_dir = args.data_dir if args.data_dir else "."
+    input_dir = args.squad_dir if args.squad_dir else args.data_dir
 
     print("Creating features from dataset file at %s", input_dir)
-    processor = SquadV1Processor()
-    if mode == 'test':
-        examples = processor.get_dev_examples(args.data_dir, filename=processor.test_file)
-    elif mode == 'dev':
-        examples = processor.get_dev_examples(args.data_dir, filename=processor.dev_file)
+
+    if mode_or_filename == "train" or mode_or_filename == "dev" or mode_or_filename == "test":
+        mode = mode_or_filename
+        processor = SquadV1Processor()
+        if mode == 'test':
+            examples = processor.get_dev_examples(args.squad_dir, filename=processor.test_file)
+        elif mode == 'dev':
+            examples = processor.get_dev_examples(args.squad_dir, filename=processor.dev_file)
+        else:
+            examples = processor.get_train_examples(args.squad_dir, filename=processor.train_file)
     else:
-        examples = processor.get_train_examples(args.data_dir, filename=processor.train_file)
+        mode = 'dev'
+        processor = SquadV1Processor()
+        processor.edited_file = mode_or_filename
+
+        if 'sparse' in mode_or_filename:
+            examples = processor.get_dev_examples(args.sparse_dir, filename=processor.edited_file)
+        elif 'dense' in mode_or_filename:
+            examples = processor.get_dev_examples(args.dense_dir, filename=processor.edited_file)
+        else:
+            print("*" * 50)
+            print(processor.edited_file)
+            print("*" * 50)
+            raise FileNotFoundError
 
     features, dataset = squad_convert_examples_to_features(
         examples=examples,

@@ -11,6 +11,9 @@ import torch
 
 # ===file IO===
 data_dir = "./data"
+squad_dir = "./data/squad"
+dense_dir = "./data/dense"
+sparse_dir = "./data/sparse"
 output_dir = "./output"
 dev_file = "dev.json"
 train_file = "train.json"
