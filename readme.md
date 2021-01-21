@@ -135,7 +135,9 @@ Open-domain QA 는 현재 데이터에서 다음과 같은 순서 진행됩니�
 코드 관련
 - reformat, refactor, clean 
 - 오래걸리는 부분 multiprocessing 적용 
-   - dense/sparse retrieve 부분
+   - dense/sparse retrieve 부분 
+   - squad_evaluate 부분 
+   - get_raw_score 문제 해결 
    
 기타 
 - 데이터 선별 무작위로 다시 
