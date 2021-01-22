@@ -71,8 +71,8 @@ faiss 설치를 이와 같이 해야합니다
     - RAG 느낌
 5. (TO-DO) phrase retrieval(fine tuned DPR+faiss 으로 예상)을 이용해 시스템 구현
     - DenSPI 같은 느낌
-6. (TO-DO) generative 모델로 closed-book QA 하기 
-    - BART, T5, REALM
+6. (TO-DO) generative(Enc-Dec) 모델로 closed-book QA 하기 
+    - BART, T5
 
  
 
@@ -133,7 +133,7 @@ Open-domain QA 는 현재 데이터에서 다음과 같은 순서 진행됩니�
 
 자료 작성 관련 
 - RAG DenSPI 추가 
-- T5 REALM 추가
+- T5 BART close-bookQA 추가
 - fine-tune 가능하도록 만들기
 - HF에서 그냥 불러온 것들 중 이해해야하는 것들은 직접 구현해야함
 
