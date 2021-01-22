@@ -136,6 +136,7 @@ Open-domain QA 는 현재 데이터에서 다음과 같은 순서 진행됩니�
 - T5 BART close-bookQA 추가
 - fine-tune 가능하도록 만들기
 - HF에서 그냥 불러온 것들 중 이해해야하는 것들은 직접 구현해야함
+- 데이터 확장: evaluate 함수 수정 
 
 
 코드 관련
