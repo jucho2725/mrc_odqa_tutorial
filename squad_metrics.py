@@ -72,7 +72,10 @@ def get_raw_scores(examples, preds):
 
     for example in examples:
         qas_id = example.qas_id
-        print
+        print(f"example answers {example.answers}")
+        for answer in example.answers:
+            print(f"ans dict text: {answer['text']}")
+            break
         gold_answers = [answer["text"] for answer in example.answers if normalize_answer(answer["text"])]
 
         if not gold_answers:
