@@ -32,11 +32,11 @@ verbose_logging = False         # If true, all of the warnings related to data p
 null_score_diff_threshold = 0.0 # "If null_score - best_non_null is greater than the threshold predict null.
 
 # ===eval config===
-eval_batch_size = 8
+eval_batch_size = 4
 max_answer_length = 30          # The maximum length of an answer that can be generated. This is needed because the start
 
 # ===train config===
-train_batch_size = 8            # Batch size per GPU/CPU for training.
+train_batch_size = 4            # Batch size per GPU/CPU for training.
 learning_rate = 5e-5            # The initial learning rate for optimizer
 num_train_epochs = 5.0          # Total number of training epochs to perform.
 

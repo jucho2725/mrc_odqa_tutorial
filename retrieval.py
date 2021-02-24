@@ -63,6 +63,7 @@ class SparseRetrieval:
         return tfidfv, context_embeddings
 
     def sparse_searching(self, sparse_query, sparse_embedding, texts, topk=1):
+
         distances = spatial.distance.cdist(sparse_query, sparse_embedding, "cosine")[0]
         result = zip(range(len(distances)), distances)
         result = sorted(result, key=lambda x: x[1])
